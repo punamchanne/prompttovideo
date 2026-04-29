@@ -35,10 +35,13 @@ export default function SignUpPage() {
   });
 
   const [image, setImage] = useState<File | null>(null);
-  const [otpSent, setOtpSent] = useState("");
   const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
+    if (field === "email") {
+      setIsEmailVerified(false);
+      setForm((prev) => ({ ...prev, otp: "" }));
+    }
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -58,16 +61,14 @@ export default function SignUpPage() {
       });
       toast.promise(response, {
         loading: "Sending Email...",
-        success: (data: AxiosResponse) => {
+        success: () => {
           (
             document.getElementById("otpContainer") as HTMLDialogElement
           ).showModal();
-          setOtpSent(data.data.token);
           return "Email Sent!!";
         },
-        error: (err) => {
-          console.log(err);
-          return err.data?.response.message || "Something went wrong";
+        error: () => {
+          return "Unable to send OTP right now";
         },
       });
     } catch (error) {
@@ -124,6 +125,11 @@ export default function SignUpPage() {
 
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
+      return;
+    }
+
+    if (!isEmailVerified) {
+      toast.error("Please verify your email first");
       return;
     }
 
@@ -410,16 +416,32 @@ export default function SignUpPage() {
 
           <button
             className="btn btn-primary w-full mt-4 py-2"
-            onClick={(e) => {
+            onClick={async (e) => {
               e.preventDefault();
-              if (form.otp?.length === 6 && form.otp === otpSent) {
-                setIsEmailVerified(true);
-                (
-                  document.getElementById("otpContainer") as HTMLDialogElement
-                )?.close();
-                toast.success("OTP Verified", { duration: 2000 });
-              } else {
-                toast.error("Invalid OTP!!!", { duration: 2000 });
+
+              if (form.otp?.length !== 6) {
+                toast.error("Enter the 6 digit OTP", { duration: 2000 });
+                return;
+              }
+
+              try {
+                const response = await axios.post(
+                  "/api/helper/verify-email/confirm",
+                  {
+                    email: form.email,
+                    otp: form.otp,
+                  }
+                );
+
+                if (response.data.verified) {
+                  setIsEmailVerified(true);
+                  (
+                    document.getElementById("otpContainer") as HTMLDialogElement
+                  )?.close();
+                  toast.success("OTP Verified", { duration: 2000 });
+                }
+              } catch (error) {
+                toast.error("Invalid or expired OTP!!!", { duration: 2000 });
               }
             }}
           >
