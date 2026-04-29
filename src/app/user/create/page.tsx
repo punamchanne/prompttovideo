@@ -8,6 +8,7 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import Title from "@/components/Title";
+import { useAuth } from "@/context/AuthContext";
 
 /* ---------------- Types ---------------- */
 type SceneStatus = "idle" | "generating" | "completed";
@@ -21,6 +22,7 @@ interface GeneratedScene {
 
 /* ---------------- Page ---------------- */
 export default function CreateVideoPage() {
+  const { user, setUser } = useAuth();
   const [prompt, setPrompt] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [scenes, setScenes] = useState<GeneratedScene[]>([]);
@@ -41,7 +43,12 @@ export default function CreateVideoPage() {
         body: JSON.stringify({ prompt }),
       });
 
-      if (!res.ok) throw new Error("Generation failed");
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => null);
+        throw new Error(
+          errorData?.error || "Failed to generate video. Please try again."
+        );
+      }
 
       const data = await res.json();
 
@@ -55,10 +62,19 @@ export default function CreateVideoPage() {
         }))
       );
 
+      if (user && typeof data.remainingCredits === "number") {
+        setUser({
+          ...user,
+          credits: data.remainingCredits,
+        });
+      }
+
       setSystemMessage("Video generated successfully 🎉");
     } catch (err) {
       console.error(err);
-      setSystemMessage("Failed to generate video");
+      setSystemMessage(
+        err instanceof Error ? err.message : "Failed to generate video"
+      );
     } finally {
       setIsGenerating(false);
     }

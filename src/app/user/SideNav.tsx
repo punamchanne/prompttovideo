@@ -40,6 +40,7 @@ const SideNav = ({
   const pathname = usePathname();
   const pathSegments = pathname.split("/").filter(Boolean);
   if (!user) return null;
+  const avatarSrc = user.profileImage?.trim() ? user.profileImage : null;
   return (
     <>
       <div className={`drawer lg:drawer-open max-h-screen`}>
@@ -83,15 +84,26 @@ const SideNav = ({
               <div className="navbar-end space-x-4">
                 <ThemeToggler />
                 <div className="dropdown dropdown-left cursor-pointer bg-transparent">
-                  <Image
-                    src={user.profileImage!}
-                    alt="Avatar"
-                    className="rounded-full"
-                    width={40}
-                    height={40}
-                    tabIndex={0}
-                    role="button"
-                  />
+                    {avatarSrc ? (
+                      <Image
+                        src={avatarSrc}
+                        alt="Avatar"
+                        className="rounded-full"
+                        width={40}
+                        height={40}
+                        tabIndex={0}
+                        role="button"
+                      />
+                    ) : (
+                      <div
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base-100 font-semibold"
+                        tabIndex={0}
+                        role="button"
+                        aria-label="Avatar"
+                      >
+                        {user.name?.[0]?.toUpperCase() ?? "U"}
+                      </div>
+                    )}
                   <ul
                     tabIndex={0}
                     className="dropdown-content menu bg-base-100 rounded-box z-1 w-72 p-2 shadow"
@@ -132,15 +144,26 @@ const SideNav = ({
               <ul className="menu menu-horizontal flex items-center space-x-4">
                 <ThemeToggler />
                 <div className="dropdown dropdown-left cursor-pointer bg-transparent">
-                  <Image
-                    src={user.profileImage!}
-                    alt="Avatar"
-                    className="rounded-full"
-                    width={40}
-                    height={40}
-                    tabIndex={0}
-                    role="button"
-                  />
+                  {avatarSrc ? (
+                    <Image
+                      src={avatarSrc}
+                      alt="Avatar"
+                      className="rounded-full"
+                      width={40}
+                      height={40}
+                      tabIndex={0}
+                      role="button"
+                    />
+                  ) : (
+                    <div
+                      className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-base-100 font-semibold"
+                      tabIndex={0}
+                      role="button"
+                      aria-label="Avatar"
+                    >
+                      {user.name?.[0]?.toUpperCase() ?? "U"}
+                    </div>
+                  )}
                   <ul
                     tabIndex={0}
                     className="dropdown-content menu bg-base-100 rounded-box z-1 w-72 p-2 shadow"

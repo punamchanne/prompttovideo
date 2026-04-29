@@ -75,6 +75,8 @@ async function generateVideoWithVeo(
 
 /* ---------------- API ---------------- */
 export async function POST(req: NextRequest) {
+  let creditsReserved = false;
+  let userId = "";
   try {
     /* ---------------- Auth ---------------- */
     const token = req.cookies.get("token")?.value;
@@ -83,7 +85,7 @@ export async function POST(req: NextRequest) {
     }
 
     const decodedData = jwt.verify(token, process.env.JWT_SECRET!) as any;
-    const userId = decodedData.id;
+    userId = decodedData.id;
 
     /* ---------------- Input ---------------- */
     const { prompt } = await req.json();
@@ -92,13 +94,20 @@ export async function POST(req: NextRequest) {
     }
 
     /* ---------------- Credit Check ---------------- */
-    const user = await User.findById(userId);
-    if (!user || user.credits < 2) {
+    const user = await User.findOneAndUpdate(
+      { _id: userId, credits: { $gte: 5 } },
+      { $inc: { credits: -5 } },
+      { new: true }
+    );
+
+    if (!user) {
       return NextResponse.json(
-        { error: "Insufficient credits" },
+        { error: "Credit limit reached" },
         { status: 403 }
       );
     }
+
+    creditsReserved = true;
 
     /* ---------------- Create Video ---------------- */
     const video = await Video.create({
@@ -163,10 +172,9 @@ export async function POST(req: NextRequest) {
       videoUrls,
     });
 
-    /* ---------------- Deduct Credits ---------------- */
+    /* ---------------- Finalize User Usage ---------------- */
     await User.findByIdAndUpdate(userId, {
       $inc: {
-        credits: -2,
         totalVideosGenerated: 1,
       },
     });
@@ -176,9 +184,22 @@ export async function POST(req: NextRequest) {
       videoId: video._id,
       status: "COMPLETED",
       scenes: generatedScenes,
+      remainingCredits: user.credits ?? 0,
     });
   } catch (error) {
     console.error("Error generating video:", error);
+
+    try {
+      // Refund credits if the generation failed after we reserved them.
+      if (creditsReserved && userId) {
+        await User.findByIdAndUpdate(userId, {
+          $inc: { credits: 5 },
+        });
+      }
+    } catch (refundError) {
+      console.error("Error refunding credits:", refundError);
+    }
+
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

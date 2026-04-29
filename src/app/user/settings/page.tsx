@@ -17,7 +17,7 @@ import {
 } from "@tabler/icons-react";
 
 export default function SettingsPage() {
-  const { user } = useAuth();
+  const { user, setUser } = useAuth();
   const [saving, setSaving] = useState(false);
   const [form, setForm] = useState<User>(user!);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -45,7 +45,10 @@ export default function SettingsPage() {
     toast.promise(uploadPromise, {
       loading: "Uploading Profile Image...",
       success: (res: AxiosResponse) => {
-        setForm({ ...form, profileImage: res.data.url });
+        const imagePath = res.data.path ?? res.data.url ?? "";
+        const nextForm = { ...form, profileImage: imagePath };
+        setForm(nextForm);
+        setUser({ ...user, ...nextForm });
         return "Image Uploaded Successfully";
       },
       error: "Failed to upload image",
@@ -60,6 +63,7 @@ export default function SettingsPage() {
         phone: form.phone,
         profileImage: form.profileImage,
       });
+      setUser({ ...user, ...form });
       toast.success("Settings updated successfully");
     } catch (error) {
       toast.error("Failed to update settings");
