@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vidary - Prompt-to-Video Generation Platform
 
-## Getting Started
+Vidary is a modern, full-stack Next.js web application designed to generate educational and creative videos from simple text prompts. It is built to be resilient, utilizing multiple remote AI providers and a local offline Python generator as fallback options.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Key Features
+
+* **Multi-Tier Video Generation:**
+  * **Primary:** Generates high-quality AI videos using **Fal.ai API**.
+  * **Fallback 1 (Pexels):** Fetches context-relevant stock video clips using **Pexels API** if the primary AI service is unavailable.
+  * **Fallback 2 (Offline Generator):** Runs a local **Python pipeline** (using `moviepy`, `gTTS`, and `Pillow`) to generate educational slides, bouncing letter capsules, and audio voiceovers dynamically.
+* **Full-Stack User Management:**
+  * JWT-based secure user authentication (Registration, Login, Verification Emails).
+  * Interactive user dashboard tracking video histories, creation times, and usage credits.
+  * User profile management (supporting profile image uploads).
+* **Responsive Modern UI:**
+  * Built using **React 19**, **Next.js 16 (App Router)**, and **TypeScript**.
+  * Premium design using **Tailwind CSS v4**, **DaisyUI v5**, and smooth animations powered by **Framer Motion**.
+* **Database & Mail Services:**
+  * Backed by **MongoDB** (using Mongoose) for managing users, credits, and video logs.
+  * **Nodemailer** integration with **EJS templating** for verification emails.
+
+---
+
+## 🛠️ Technology Stack
+
+* **Frontend & Backend API:** Next.js 16, React 19, TypeScript
+* **Database:** MongoDB (via Mongoose)
+* **Styling & UI:** Tailwind CSS v4, DaisyUI v5, Tabler Icons, Framer Motion, Recharts
+* **Mail System:** Nodemailer, EJS
+* **Local Offline Video Generation:** Python 3, MoviePy, Pillow (PIL), gTTS (Google Text-to-Speech), NumPy
+
+---
+
+## 📋 Prerequisites
+
+Ensure you have the following installed on your machine:
+
+1. **Node.js** (v18.x or higher) and **npm**
+2. **MongoDB** (Local instance running or MongoDB Atlas connection string)
+3. **Python 3.x** (Required for the offline/fallback video generation pipeline)
+
+---
+
+## ⚙️ Environment Configuration
+
+Create a `.env` file in the root directory and configure the following environment variables:
+
+```env
+# Database Connection
+MONGO_URI=mongodb://localhost:27017/vidary
+
+# Server Base URL
+BASE_URL=http://localhost:3000
+
+# Authentication Secret
+JWT_SECRET=your_jwt_secret_here
+
+# Third-Party APIs (Keys required for remote video generation)
+GEMINI_API_KEY=your_gemini_api_key_here
+FAL_API_KEY=your_fal_api_key_here
+PEXELS_API_KEY=your_pexels_api_key_here
+
+# SMTP Configuration (For email verification)
+SMTP_HOST=your_smtp_host
+SMTP_PORT=your_smtp_port
+SMTP_USER=your_smtp_user
+SMTP_PASS=your_smtp_password
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📦 Installation Guide
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 1. Clone the repository
+```bash
+git clone https://github.com/punamchanne/prompttovideo.git
+cd prompttovideo
+```
 
-## Learn More
+### 2. Install Node.js Dependencies
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 3. Install Python Dependencies (for Offline Generation)
+The local offline video generation script depends on python packages. Install them using `pip`:
+```bash
+pip install pillow moviepy gTTS numpy
+```
+*Note: Make sure your system has the standard system fonts installed or accessible (the Python script automatically checks for standard Windows fonts like `Arial` and `Comic Sans`).*
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 💻 Running the Application
 
-## Deploy on Vercel
+### Development Server
+Start the development server with Webpack support enabled:
+```bash
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Production Build
+Build and run the production-optimized client-server package:
+```bash
+npm run build
+npm start
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 📁 Repository Structure
+
+```
+├── public/                     # Static assets (images, profile pictures)
+│   └── videos/                 # Local directory for generated video outputs
+├── src/
+│   ├── app/                    # Next.js App Router (pages and API endpoints)
+│   │   ├── (Home)/             # Public authentication & landing routes
+│   │   ├── api/                # API routes (Auth, Video generation, Users)
+│   │   └── user/               # User panel (dashboard, video creations, settings)
+│   ├── components/             # Reusable UI components (Footer, Loading, Navbar, etc.)
+│   ├── config/                 # Configurations (MongoDB, Nodemailer config)
+│   ├── context/                # React Context for Application Authentication
+│   ├── helper/                 # Helper utilities (Formatters, EJS mail templates)
+│   ├── lib/                    # Library functions (Veo integration, Local python execution runner)
+│   └── models/                 # Mongoose Database Models (User, Video, Scene)
+├── tsconfig.json               # TypeScript Configuration
+├── tailwind.config.ts          # Tailwind configuration
+└── package.json                # Project dependencies and script scripts
+```
+
+---
+
+## 🔒 Security & Safe Committing
+* The `.env` file is excluded from git commits to protect sensitive database URLs and API keys.
+* Temporary tests, logs, and generated videos in `/scratch/` and `/public/videos/` are automatically ignored.
