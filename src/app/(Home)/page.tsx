@@ -47,13 +47,43 @@ export default function HomePage() {
               </button>
             </div>
             <div className="mt-16 relative">
-              <div className="mockup-window border border-base-300 bg-base-200 shadow-2xl">
-                <div className="bg-base-100 flex justify-center items-center h-64 md:h-96">
-                  <div className="flex flex-col items-center gap-4 opacity-40">
-                    <div className="loading loading-ring loading-lg text-primary" />
-                    <p className="font-mono text-sm">
-                      Generating scenes from prompt...
-                    </p>
+              <div className="mockup-window border border-base-300 bg-base-200 shadow-2xl overflow-hidden">
+                <div className="bg-black relative w-full h-[250px] md:h-[450px] flex items-center justify-center group cursor-pointer">
+                  <img
+                    src="/dashboard_mockup.png"
+                    alt="AI Generated Video Preview"
+                    className="w-full h-full object-cover"
+                  />
+                  
+                  {/* Premium overlay play button */}
+                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center group-hover:bg-black/35 transition-all duration-300">
+                    <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/95 text-white rounded-full flex items-center justify-center shadow-2xl transform group-hover:scale-110 transition-transform duration-300 backdrop-blur-xs">
+                      <svg
+                        className="w-8 h-8 md:w-10 md:h-10 fill-current translate-x-0.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Video player controls mockup */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/85 via-black/45 to-transparent flex items-center gap-4 text-white text-xs font-sans">
+                    <div className="flex gap-2 items-center">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                      <span>0:00 / 0:10</span>
+                    </div>
+                    <div className="grow h-1.5 bg-white/30 rounded-full overflow-hidden">
+                      <div className="w-1/3 h-full bg-primary rounded-full" />
+                    </div>
+                    <div className="flex gap-3 items-center">
+                      <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+                      </svg>
+                      <span>1080p</span>
+                    </div>
                   </div>
                 </div>
               </div>
