@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import {
   IconCalendarEvent,
   IconStethoscope,
@@ -236,7 +237,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div
+            <motion.div
               {...fadeIn}
               className="bg-base-100 p-8 rounded-3xl text-base-content shadow-inner"
             >
@@ -264,7 +265,7 @@ export default function HomePage() {
                   Request Demo
                 </button>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
