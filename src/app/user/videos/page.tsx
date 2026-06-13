@@ -151,9 +151,7 @@ export default function MyVideosPage() {
             {video.videoUrls?.length > 0 && (
               <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {video.videoUrls.map((url, index) => (
-                  <video key={index} className="w-full rounded-lg" controls>
-                    <source src={url} type="video/mp4" />
-                  </video>
+                  <video key={url} className="w-full rounded-lg" src={url} controls />
                 ))}
               </div>
             )}

@@ -5,11 +5,12 @@ export async function downloadAndStoreVideo(
   veoUrl: string,
   fileName: string
 ): Promise<string> {
-  const res = await fetch(veoUrl, {
-    headers: {
-      "x-goog-api-key": process.env.GEMINI_API_KEY!,
-    },
-  });
+  const headers: Record<string, string> = {};
+  if (veoUrl.includes("googleapis.com")) {
+    headers["x-goog-api-key"] = process.env.GEMINI_API_KEY || "";
+  }
+
+  const res = await fetch(veoUrl, { headers });
 
   if (!res.ok) {
     throw new Error("Failed to download Veo video");

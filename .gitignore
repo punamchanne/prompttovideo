@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# macOS metadata files
+._*
+.DS_Store
+
+# scratch folder containing credentials and test scripts
+/scratch/
+
+# public videos / media files generated during testing
+/public/videos/*.mp4
+/public/videos/*.mp3
+/public/videos/._*

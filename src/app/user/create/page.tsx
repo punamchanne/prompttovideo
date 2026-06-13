@@ -179,9 +179,7 @@ export default function CreateVideoPage() {
                 </div>
 
                 {scene.videoUrl && (
-                  <video className="w-full rounded-lg mt-3" controls>
-                    <source src={scene.videoUrl} type="video/mp4" />
-                  </video>
+                  <video key={scene.videoUrl} className="w-full rounded-lg mt-3" src={scene.videoUrl} controls />
                 )}
               </div>
             ))}
