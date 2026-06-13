@@ -25,7 +25,7 @@ export default function HomePage() {
         <div className="hero-content text-center">
           <div className="max-w-3xl">
             <div className="badge badge-outline badge-secondary mb-4 p-4 gap-2">
-              ✨ Powered by Gemini AI
+              ✨ Powered by Advanced AI
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
               Turn Ideas into{" "}
@@ -167,7 +167,7 @@ export default function HomePage() {
                 <div className="mt-4 px-4">
                   <h4 className="font-bold">AI Generation</h4>
                   <p className="text-sm opacity-60">
-                    Wait while Gemini creates scenes
+                    Wait while AI creates scenes
                   </p>
                 </div>
               </li>
@@ -198,7 +198,7 @@ export default function HomePage() {
           </p>
           <div className="flex flex-wrap justify-center gap-10 md:gap-20 opacity-80">
             <div className="flex flex-col items-center">
-              <span className="text-2xl font-bold">Gemini AI</span>
+              <span className="text-2xl font-bold">Advanced AI</span>
               <span className="text-xs">Video Models</span>
             </div>
             <div className="flex flex-col items-center">

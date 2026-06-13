@@ -23,7 +23,7 @@ const Component = ({ children }: { children: React.ReactNode }) => {
         <title>Vidary — AI-Powered Informative Videos, Instantly</title>
         <meta
           name="description"
-          content="Vidary is an AI-powered platform that transforms text prompts into short, informative videos using advanced Gemini video models. Generate, store, and manage AI videos through a clean, chat-based interface built for creators, educators, and professionals."
+          content="Vidary is an AI-powered platform that transforms text prompts into short, informative videos using advanced video models. Generate, store, and manage AI videos through a clean, chat-based interface built for creators, educators, and professionals."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

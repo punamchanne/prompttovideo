@@ -58,7 +58,6 @@ BASE_URL=http://localhost:3000
 JWT_SECRET=your_jwt_secret_here
 
 # Third-Party APIs (Keys required for remote video generation)
-GEMINI_API_KEY=your_gemini_api_key_here
 FAL_API_KEY=your_fal_api_key_here
 PEXELS_API_KEY=your_pexels_api_key_here
 
