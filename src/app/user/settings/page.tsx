@@ -45,7 +45,7 @@ export default function SettingsPage() {
     toast.promise(uploadPromise, {
       loading: "Uploading Profile Image...",
       success: (res: AxiosResponse) => {
-        const imagePath = res.data.path ?? res.data.url ?? "";
+        const imagePath = `${res.data.path ?? res.data.url ?? ""}?t=${Date.now()}`;
         const nextForm = { ...form, profileImage: imagePath };
         setForm(nextForm);
         setUser({ ...user, ...nextForm });
@@ -58,10 +58,11 @@ export default function SettingsPage() {
   const handleSave = async () => {
     setSaving(true);
     try {
+      const cleanProfileImage = form.profileImage ? form.profileImage.split("?")[0] : "";
       await axios.post("/api/user/update-settings", {
         name: form.name,
         phone: form.phone,
-        profileImage: form.profileImage,
+        profileImage: cleanProfileImage,
       });
       setUser({ ...user, ...form });
       toast.success("Settings updated successfully");

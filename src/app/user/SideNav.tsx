@@ -85,12 +85,10 @@ const SideNav = ({
                 <ThemeToggler />
                 <div className="dropdown dropdown-left cursor-pointer bg-transparent">
                     {avatarSrc ? (
-                      <Image
+                      <img
                         src={avatarSrc}
                         alt="Avatar"
-                        className="rounded-full"
-                        width={40}
-                        height={40}
+                        className="rounded-full w-10 h-10 object-cover"
                         tabIndex={0}
                         role="button"
                       />
@@ -108,11 +106,19 @@ const SideNav = ({
                     tabIndex={0}
                     className="dropdown-content menu bg-base-100 rounded-box z-1 w-72 p-2 shadow"
                   >
-                    {/* User Initial */}
+                    {/* User Profile Image or Initial */}
                     <div className="flex items-center justify-center mb-2">
-                      <div className="flex items-center justify-center w-12 h-12 bg-primary text-base-conten rounded-full text-xl font-bold">
-                        {user?.name[0].toUpperCase()}
-                      </div>
+                      {avatarSrc ? (
+                        <img
+                          src={avatarSrc}
+                          alt="Profile Avatar"
+                          className="w-12 h-12 rounded-full object-cover border border-primary"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-12 h-12 bg-primary text-base-content rounded-full text-xl font-bold">
+                          {user?.name[0].toUpperCase()}
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-center">
@@ -145,12 +151,10 @@ const SideNav = ({
                 <ThemeToggler />
                 <div className="dropdown dropdown-left cursor-pointer bg-transparent">
                   {avatarSrc ? (
-                    <Image
+                    <img
                       src={avatarSrc}
                       alt="Avatar"
-                      className="rounded-full"
-                      width={40}
-                      height={40}
+                      className="rounded-full w-10 h-10 object-cover"
                       tabIndex={0}
                       role="button"
                     />
@@ -168,11 +172,19 @@ const SideNav = ({
                     tabIndex={0}
                     className="dropdown-content menu bg-base-100 rounded-box z-1 w-72 p-2 shadow"
                   >
-                    {/* User Initial */}
+                    {/* User Profile Image or Initial */}
                     <div className="flex items-center justify-center mb-2">
-                      <div className="flex items-center justify-center w-12 h-12 bg-primary text-base-conten rounded-full text-xl font-bold">
-                        {user.name[0].toUpperCase()}
-                      </div>
+                      {avatarSrc ? (
+                        <img
+                          src={avatarSrc}
+                          alt="Profile Avatar"
+                          className="w-12 h-12 rounded-full object-cover border border-primary"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center w-12 h-12 bg-primary text-base-content rounded-full text-xl font-bold">
+                          {user.name[0].toUpperCase()}
+                        </div>
+                      )}
                     </div>
 
                     <div className="flex items-center justify-center">

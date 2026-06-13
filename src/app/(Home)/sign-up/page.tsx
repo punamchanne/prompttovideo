@@ -257,32 +257,44 @@ export default function SignUpPage() {
                 <legend className="fieldset-legend">
                   Profile Image <span className="text-error">*</span>
                 </legend>
-                <div className="join">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    className="file-input file-input-primary w-full join-item"
-                    disabled={form.profileImage !== "" || form.name === ""}
-                    onChange={(e) => {
-                      const files = e.target.files;
-                      if (files && files.length > 0) {
-                        setImage(files[0]);
-                      }
-                    }}
-                  />
-                  {(image || form.profileImage !== "") && (
-                    <button
-                      className="btn btn-secondary join-item"
-                      onClick={() =>
-                        uploadImage(
-                          "applicant-profile-images",
-                          form.name || "profile-image",
-                          "profileImage"
-                        )
-                      }
-                    >
-                      Upload
-                    </button>
+                <div className="flex flex-col gap-3 w-full">
+                  <div className="join w-full">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="file-input file-input-primary w-full join-item"
+                      disabled={form.profileImage !== "" || form.name === ""}
+                      onChange={(e) => {
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          setImage(files[0]);
+                        }
+                      }}
+                    />
+                    {image && form.profileImage === "" && (
+                      <button
+                        className="btn btn-secondary join-item"
+                        onClick={() =>
+                          uploadImage(
+                            "applicant-profile-images",
+                            form.name || "profile-image",
+                            "profileImage"
+                          )
+                        }
+                      >
+                        Upload
+                      </button>
+                    )}
+                  </div>
+                  {form.profileImage && (
+                    <div className="flex items-center gap-3 bg-base-200 p-3 rounded-xl border border-base-content/5">
+                      <img
+                        src={form.profileImage}
+                        alt="Profile Preview"
+                        className="w-12 h-12 rounded-full object-cover border border-primary shadow-sm"
+                      />
+                      <span className="text-xs text-success font-bold">Image Uploaded Successfully!</span>
+                    </div>
                   )}
                 </div>
               </fieldset>
