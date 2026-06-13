@@ -105,7 +105,7 @@ export default function SignUpPage() {
           });
           return "Image Uploaded Successfully";
         },
-        error: (err: unknown) => `This just happened: ${err}`,
+        error: (err: any) => err.response?.data?.message || "Failed to upload image",
       });
     }
   };
@@ -142,8 +142,8 @@ export default function SignUpPage() {
           router.push("/login");
           return "Account created successfully!";
         },
-        error: (err: unknown) => {
-          return `This just happened: ${err}`;
+        error: (err: any) => {
+          return err.response?.data?.message || "Something went wrong!!!";
         },
       });
     } catch (error) {
