@@ -1,8 +1,12 @@
+"use client";
 import { motion } from "framer-motion";
 import { IconMenu, IconPhotoAi } from "@tabler/icons-react";
 import Link from "next/link";
 import ThemeToggler from "./ThemeToggler";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export default function Navbar() {
   const pathName = usePathname();
@@ -12,6 +16,21 @@ export default function Navbar() {
     { name: "About", path: "#about" },
     { name: "Technology", path: "#tech" },
   ];
+
+  const { user, setUser } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    toast.promise(axios.get("/api/auth/logout"), {
+      loading: "Logging out...",
+      success: () => {
+        setUser(null);
+        router.push("/");
+        return "Logged out successfully";
+      },
+      error: "Error logging out",
+    });
+  };
 
   return (
     <>
@@ -88,25 +107,50 @@ export default function Navbar() {
         <div className="navbar-end space-x-2">
           <ThemeToggler />
 
-          <motion.div
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Link className="btn btn-outline btn-accent" href="/sign-up">
-              Get Started
-            </Link>
-          </motion.div>
+          {user ? (
+            <>
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link className="btn btn-primary" href="/user/dashboard">
+                  Dashboard
+                </Link>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+              >
+                <button onClick={handleLogout} className="btn btn-outline btn-secondary">
+                  Logout
+                </button>
+              </motion.div>
+            </>
+          ) : (
+            <>
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+              >
+                <Link className="btn btn-outline btn-accent" href="/sign-up">
+                  Get Started
+                </Link>
+              </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-          >
-            <Link href="/login" className="btn btn-secondary">
-              Login
-            </Link>
-          </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+              >
+                <Link href="/login" className="btn btn-secondary">
+                  Login
+                </Link>
+              </motion.div>
+            </>
+          )}
         </div>
       </motion.div>
     </>

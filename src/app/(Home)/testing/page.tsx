@@ -46,10 +46,10 @@ const App = () => {
   const [userRole, setUserRole] = useState("patient"); // patient, compounder, doctor
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedArea, setSelectedArea] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
-  const [user, setUser] = useState(null);
-  const [booking, setBooking] = useState(null);
-  const [queue, setQueue] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
+  const [booking, setBooking] = useState<any>(null);
+  const [queue, setQueue] = useState<any[]>([]);
   const [filters, setFilters] = useState({ specialization: "all" });
 
   // Simulated queue management
@@ -750,7 +750,7 @@ const App = () => {
       };
       setBooking(newBooking);
 
-      const initialQueue = Array.from(
+      const initialQueue: any[] = Array.from(
         { length: selectedDoctor?.currentQueue || 0 },
         (_, i) => ({
           id: i + 1,
@@ -1190,7 +1190,7 @@ const App = () => {
       setShowAddPatient(false);
     };
 
-    const updateStatus = (id, status) => {
+    const updateStatus = (id: any, status: any) => {
       setPatients(patients.map((p) => (p.id === id ? { ...p, status } : p)));
     };
 
@@ -1464,7 +1464,7 @@ const App = () => {
     });
     const [showLimits, setShowLimits] = useState(false);
 
-    const handleOnlineConsultation = (id, action) => {
+    const handleOnlineConsultation = (id: any, action: any) => {
       if (action === "accept") {
         const meetingLink =
           "https://meet.google.com/" + Math.random().toString(36).substring(7);

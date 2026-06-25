@@ -3,6 +3,35 @@ import { Toaster } from "react-hot-toast";
 import "../globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { useEffect } from "react";
+import axios from "axios";
+
+const Component = ({ children }: { children: React.ReactNode }) => {
+  const { setUser } = useAuth();
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get("/api/auth/verifytoken");
+        if (response.data && response.data.user) {
+          setUser(response.data.user);
+        }
+      } catch (err) {
+        console.error("Error verifying token on home layout mount:", err);
+      }
+    };
+    fetchUser();
+  }, [setUser]);
+
+  return (
+    <body className={`antialiased roboto-condensed`}>
+      <Toaster />
+      <Navbar />
+      {children}
+      <Footer />
+    </body>
+  );
+};
 
 export default function RootLayout({
   children,
@@ -28,12 +57,9 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`antialiased roboto-condensed`}>
-        <Toaster />
-        <Navbar />
-        {children}
-        <Footer />
-      </body>
+      <AuthProvider>
+        <Component>{children}</Component>
+      </AuthProvider>
     </html>
   );
 }

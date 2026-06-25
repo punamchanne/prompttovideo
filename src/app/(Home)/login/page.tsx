@@ -138,9 +138,9 @@ export default function LoginPage() {
                 <input type="checkbox" className="mr-2" />
                 Remember Me
               </label>
-              <a href="#" className="text-sm text-primary hover:underline">
+              <Link href="/forgot-password" className="text-sm text-primary hover:underline">
                 Forgot Password?
-              </a>
+              </Link>
             </div>
             <button
               onClick={onLogin}

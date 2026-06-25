@@ -11,7 +11,10 @@ import {
   IconMessage,
   IconMail,
 } from "@tabler/icons-react";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 export default function HomePage() {
+  const { user } = useAuth();
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -39,12 +42,18 @@ export default function HomePage() {
               advanced AI. Built for educators, creators, and professionals.
             </p>
             <div className="flex flex-col md:flex-row gap-4 justify-center">
-              <button className="btn btn-primary btn-lg shadow-xl px-8">
+              <Link
+                href={user ? "/user/dashboard" : "/sign-up"}
+                className="btn btn-primary btn-lg shadow-xl px-8"
+              >
                 Get Started
-              </button>
-              <button className="btn btn-ghost btn-lg px-8 border-base-300">
+              </Link>
+              <Link
+                href="#features"
+                className="btn btn-ghost btn-lg px-8 border-base-300"
+              >
                 View Features
-              </button>
+              </Link>
             </div>
             <div className="mt-16 relative">
               <div className="mockup-window border border-base-300 bg-base-200 shadow-2xl overflow-hidden">
